@@ -1,5 +1,5 @@
 project(unique)
-cmake_minimum_required (VERSION 2.8)
+cmake_minimum_required (VERSION 2.8.6)
 
 set(default_build_type "Release")
 if(NOT CMAKE_BUILD_TYPE)
