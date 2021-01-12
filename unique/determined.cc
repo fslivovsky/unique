@@ -23,10 +23,11 @@ R"(Usage:
   unique [options] <input file>
 
 Options:
-  -h --help                     Show this screen.
-  -c --conflict-limit <int>     Conflict limit for SAT solver (per variable). [default: 1000]
-  -o --output-file <filename>   Write output to file (instead of standard output).
-  -s --strict                   Use only universals for existential definitions and vice versa.
+  -h --help                     shows this screen
+  -c --conflict-limit <int>     conflict limit for SAT solver (per variable) [default: 1000]
+  -o --output-file <filename>   writes output to the given file (instead of standard output)
+  -m --mode <mode>              determines which variables may be used in definitions [default: both]
+                                (both | other-defined | other)
   --output-format <format>      Output format [default: QCIR]
                                 (QCIR | QDIMACS | DIMACS | Verilog)
   --ordering-file <filename>    Read variable ordering for definability from file.               
@@ -111,7 +112,19 @@ int main(int argc, char* argv[]) {
     parser->setComparator(args["--ordering-file"].asString());
   }
 
-  extractor = std::make_unique<Extractor>(args["--conflict-limit"].asLong(), !args["--strict"].asBool());
+  mode definition_mode = mode::both;
+  if (args["--mode"].asString() == "both") {
+    definition_mode = mode::both;
+  } else if (args["--mode"].asString() == "other-defined") {
+    definition_mode = mode::other_defined;
+  } else if (args["--mode"].asString() == "other") {
+    definition_mode = mode::other;
+  } else {
+    std::cerr << "Invalid mode: " << args["--mode"].asString() << ", using default (both)." << std::endl;
+    definition_mode = mode::both;
+  }
+
+  extractor = std::make_unique<Extractor>(args["--conflict-limit"].asLong(), definition_mode);
 
   signal(SIGINT,  handle_sighup);
   signal(SIGTERM, handle_sighup);

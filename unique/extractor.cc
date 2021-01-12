@@ -5,7 +5,7 @@
 
 using std::tuple;
 
-Extractor::Extractor(int conflict_limit, bool use_same_type): solver(nullptr), signal_caught(false), auxiliary_start(0), conflict_limit(conflict_limit), use_same_type(use_same_type) {}
+Extractor::Extractor(int conflict_limit, mode definition_mode): solver(nullptr), signal_caught(false), auxiliary_start(0), conflict_limit(conflict_limit), definition_mode(definition_mode) {}
 
 Extractor::~Extractor() {
   delete solver;
@@ -200,7 +200,7 @@ tuple<vector<int>, vector<tuple<vector<int>, int>>> Extractor::getDefinitions(ve
         }
         std::cerr << ++checked << "/" << nr_variables_to_check << " checked. \r";
       }
-      if (!query_mask[i] || use_same_type || is_defined) {
+      if (!query_mask[i] || definition_mode == mode::both || (definition_mode == mode::other_defined && is_defined)) {
         vector<int> c1 = { variable, -(variable + max_variable_int) };
         vector<int> c2 = { -variable, (variable + max_variable_int) };
         makeMiniSatClause(c1);

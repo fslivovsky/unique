@@ -11,9 +11,11 @@ using std::unordered_set;
 
 using namespace avy::abc;
 
+enum class mode: int { both, other_defined, other };
+
 class Extractor {
 public:
-  Extractor(int conflict_limit, bool use_same_type);
+  Extractor(int conflict_limit, mode definition_mode);
   ~Extractor();
   void interrupt();
   tuple<vector<int>, vector<tuple<vector<int>, int>>> getDefinitions(vector<vector<int>>& formula, vector<int>& query_variables, vector<int>& shared_variables, vector<bool>& query_mask, int max_variable_int);
@@ -30,7 +32,7 @@ protected:
   bool signal_caught;
   int auxiliary_start;
   int conflict_limit;
-  bool use_same_type;
+  mode definition_mode;
   
 };
 
