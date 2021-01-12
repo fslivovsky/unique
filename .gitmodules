@@ -10,3 +10,6 @@
 [submodule "docopt.cpp"]
 	path = docopt.cpp
 	url = https://github.com/docopt/docopt.cpp
+[submodule "abc-ufo"]
+	path = abc
+	url = https://bitbucket.org/arieg/abc-ufo
