@@ -24,10 +24,14 @@ GatePolarity operator-(const GatePolarity& polarity) {
 }
 
 GatePolarity operator+(const GatePolarity& first, const GatePolarity& second) {
-  int first_int = static_cast<int>(first);
-  int second_int = static_cast<int>(second);
-  int return_int = std::min(first_int + second_int, 3);
-  return static_cast<GatePolarity>(return_int);
+  if (first == second) {
+    return first;
+  } else {
+    int first_int = static_cast<int>(first);
+    int second_int = static_cast<int>(second);
+    int return_int = std::min(first_int + second_int, 3);
+    return static_cast<GatePolarity>(return_int);
+  }
 }
 
 QBFParser::QBFParser(): max_quantifier_depth(0), max_alias(0), output_id(""), variable_gate_boundary(1), number_variables{0, 0}, max_id_number(0), comparator(nullptr) {
