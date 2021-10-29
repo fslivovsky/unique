@@ -8,12 +8,20 @@
 
 using std::make_tuple;
 
+std::string str_tolower(std::string s) {
+    std::transform(s.begin(), s.end(), s.begin(), 
+                   [](unsigned char c){ return std::tolower(c); }
+                  );
+    return s;
+}
+
 QCIRParser::QCIRParser() {};
 
 QCIRParser::QCIRParser(const string& filename) {
   std::ifstream file(filename.c_str());
   string line;
   while (std::getline(file, line)) {
+    line = str_tolower(line);
     line.erase(remove_if(line.begin(), line.end(), [] (char c) { return isspace(int(c)); }), line.end()); // Remove whitespaces.
     if (line.length() == 0 || line.front() == '#') {
       continue;
